@@ -10,47 +10,37 @@ import { routeCodes } from 'config/routes';
 
 import Logo from 'Assets/img/logo.svg';
 import './Home.scss';
+import InputComp from '../../components/InputComp/InputComp';
 
 class Home extends Component {
   static propTypes = {
     counter: PropTypes.number.isRequired,
     increment: PropTypes.func.isRequired,
     decrement: PropTypes.func.isRequired,
+    // comments: PropTypes.Object.isRequired,
   };
 
   state = {
-    title: 'Examples',
+    title: 'Comment train',
   };
 
   render() {
     const { title } = this.state;
-    const { counter, increment, decrement } = this.props;
+    const { comments } = this.props;
 
     return (
       <Fragment>
         <h1>{title}</h1>
-        <section className='section'>
-          <h3 className='section__title'>React Router:</h3>
-          <Link to={routeCodes.DETAIL}>Go to subpage</Link>
-        </section>
-        <section className='section'>
-          <h3 className='section__title'>Redux Thunk with Immutable:</h3>
-          <Button primary handleClick={increment}>
-            +
-          </Button>
-          <span>{counter}</span>
-          <Button secondary handleClick={decrement}>
-            -
-          </Button>
-        </section>
-        <section className='section'>
-          <h3 className='section__title'>Css with scss:</h3>
-          <div className='section__box' />
-        </section>
-        <section className='section'>
-          <h3 className='section__title'>File loader (png, jpg, gif, ttf, eot, svg, woff):</h3>
-          <img src={Logo} alt='Logo' width='150' />
-        </section>
+
+        {comments.map(c => (
+          <div key={c.dateCreated} style={{ border: 'solid', marginTop: '2rem' }}>
+            <div>{c.text}</div>
+            <br />
+            <div>{c.author}</div>
+            <div>{c.dateCreated}</div>
+          </div>
+        ))}
+        <InputComp />
       </Fragment>
     );
   }
@@ -58,11 +48,9 @@ class Home extends Component {
 
 const mapStateToProps = state => ({
   counter: state.appReducer.get('counter'),
+  comments: state.appReducer.get('comments'),
 });
 
 const mapDispatchToProps = dispatch => bindActionCreators(AppActionCreators, dispatch);
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(Home);
+export default connect(mapStateToProps, mapDispatchToProps)(Home);

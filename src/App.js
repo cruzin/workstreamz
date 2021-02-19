@@ -15,7 +15,6 @@ import './assets/styles/app.scss';
 const App = () => (
   <Provider store={store}>
     <BrowserRouter>
-      <Header />
       <div className='container'>
         <Routes />
       </div>
